@@ -30,4 +30,15 @@ describe("Product unit tests", () => {
     product.changePrice(150);
     expect(product.price).toBe(150);
   });
+
+  it("should accumulate more than one validation error", () => {
+    const product = new Product("123", "Product 1", 10);
+
+    product.changeName("")
+    product.changePrice(-1)
+    
+    expect(product.notification.getErrors().length).toBeGreaterThan(1)
+    expect(product.notification.getErrors().map(e => e.message)).toContain("Name is required")
+    expect(product.notification.getErrors().map(e => e.message)).toContain("Price must be greater than zero")
+  });
 });
